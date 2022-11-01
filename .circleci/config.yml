@@ -1,0 +1,11 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: cimg/go:1.19
+    steps:
+      - checkout
+      - run: go install honnef.co/go/tools/cmd/staticcheck@latest
+      - run: staticcheck -checks all,-ST1000 ./...
+      - run: go test -p 1 -v -cover -coverprofile=c.out -race ./...
+      - run: go tool cover -func=c.out
