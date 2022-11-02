@@ -25,6 +25,12 @@ A command line tool to wait for network healthy state to start another command, 
 wait-for --wait-start=tcp://:8000,tcp://:8001 --wait-stop=tcp://:8002,tcp://:8003 -- sleep 60
 ```
 
+## [Docker Pull Command](https://hub.docker.com/r/taylorchu/wait-for)
+
+```
+docker pull taylorchu/wait-for:latest
+```
+
 ## Why?
 
 ### Kubernetes
@@ -47,7 +53,7 @@ volumes:
     emptyDir: {}
 initContainers:
   - name: wait-for
-    image: gcr.io/xxx/wait-for:master
+    image: taylorchu/wait-for:latest
     imagePullPolicy: IfNotPresent
     command: ['cp', '/usr/bin/wait-for', '/wait-for/wait-for']
     volumeMounts:
@@ -64,3 +70,9 @@ volumeMounts:
 command: ['/wait-for/wait-for', '--wait-stop=tcp://:6060', '--']
 args: ['your_command']
 ```
+
+## Other ideas
+
+- [jwilder/dockerize](https://github.com/jwilder/dockerize)
+- [karlkfi/kubexit](https://github.com/karlkfi/kubexit)
+- [nrmitchi/k8s-controller-sidecars](https://github.com/nrmitchi/k8s-controller-sidecars)
