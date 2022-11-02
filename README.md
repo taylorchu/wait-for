@@ -67,7 +67,7 @@ initContainers:
 volumeMounts:
   - name: wait-for
     mountPath: /wait-for
-command: ['/wait-for/wait-for', '--wait-stop=tcp://:6060', '--']
+command: ['/wait-for/wait-for', '--wait-start=tcp://:8000', '--wait-stop=tcp://:8000', '--']
 args: ['your_command']
 ```
 
