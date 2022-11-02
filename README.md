@@ -37,10 +37,10 @@ docker pull taylorchu/wait-for:latest
 
 Kubernetes supports multiple containers in a pod, but there is no current feature to manage dependency ordering, so all the containers (other than init containers) start at the same time. This can cause a number of issues with certain configurations:
 
-1. Kubernetes jobs run until all containers have exited. If a sidecar container is supporting a primary container, the sidecar needs to be gracefully terminated after the primary container has exited, before the job will end.
-2. Sidecar proxies (e.g. Istio, CloudSQL Proxy) are often designed to handle network traffic to and from a pod's primary container. But if the primary container tries to make egress call or recieve ingress calls before the sidecar proxy is up and ready, those calls may fail.
+1. [Kubernetes jobs](https://github.com/kubernetes/kubernetes/issues/25908) run until all containers have exited. If a sidecar container is supporting a primary container, the sidecar needs to be gracefully terminated after the primary container has exited, before the job will end.
+2. [Sidecar proxies](https://github.com/GoogleCloudPlatform/cloud-sql-proxy/issues/128) (e.g. Istio, CloudSQL Proxy) are often designed to handle network traffic to and from a pod's primary container. But if the primary container tries to make egress call or recieve ingress calls before the sidecar proxy is up and ready, those calls may fail.
 
-There used to be an [issue](https://github.com/kubernetes/enhancements/issues/753) to make this easier with "sidecar container", but [that KEP will not be progressing](https://github.com/kubernetes/enhancements/issues/753#issuecomment-713471597).
+The k8s enhancement to address this is [sidecar container](https://github.com/kubernetes/enhancements/issues/753), but [that KEP will not be progressing](https://github.com/kubernetes/enhancements/issues/753#issuecomment-713471597). Later, another work-in-progress k8s enhancement about [keystone container](https://github.com/kubernetes/enhancements/issues/2872) appears, but it is [unclear that the KEP design is solid](https://github.com/kubernetes/enhancements/pull/2869#issuecomment-1270508226).
 
 #### Install
 
