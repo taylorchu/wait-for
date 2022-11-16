@@ -1,7 +1,8 @@
 FROM golang:1.19-alpine AS build
 
+ARG VERSION=latest
 ENV CGO_ENABLED=0
-RUN go install github.com/taylorchu/wait-for@latest
+RUN go install github.com/taylorchu/wait-for@$VERSION
 
 FROM alpine
 
