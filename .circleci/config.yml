@@ -17,9 +17,14 @@ jobs:
           version: 20.10.14
       - checkout
       - run: |
-          docker build -t $DOCKERHUB_IMAGE:$CIRCLE_TAG --build-arg VERSION=$CIRCLE_TAG .
+          docker build \
+            --build-arg VERSION=$CIRCLE_TAG \
+            -t $DOCKERHUB_IMAGE:$CIRCLE_TAG \
+            -t $DOCKERHUB_IMAGE:latest \
+            .
           echo $DOCKERHUB_PASS | docker login -u $DOCKERHUB_USER --password-stdin
           docker push $DOCKERHUB_IMAGE:$CIRCLE_TAG
+          docker push $DOCKERHUB_IMAGE:latest
 workflows:
   version: 2
   untagged-build:
