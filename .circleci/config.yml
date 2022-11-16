@@ -15,6 +15,7 @@ jobs:
     steps:
       - setup_remote_docker:
           version: 20.10.14
+      - checkout
       - run: |
           docker build -t $DOCKERHUB_IMAGE:$CIRCLE_TAG --build-arg VERSION=$CIRCLE_TAG .
           echo $DOCKERHUB_PASS | docker login -u $DOCKERHUB_USER --password-stdin
