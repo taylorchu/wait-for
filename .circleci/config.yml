@@ -16,7 +16,7 @@ jobs:
       - setup_remote_docker:
           version: 20.10.14
       - run: |
-          docker build -t $DOCKERHUB_IMAGE:$CIRCLE_TAG --build-args VERSION=$CIRCLE_SHA1 .
+          docker build -t $DOCKERHUB_IMAGE:$CIRCLE_TAG --build-args VERSION=$CIRCLE_TAG .
           echo $DOCKERHUB_PASS | docker login -u $DOCKERHUB_USER --password-stdin
           docker push DOCKERHUB_IMAGE:$CIRCLE_TAG
 workflows:
