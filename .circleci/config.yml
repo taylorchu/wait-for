@@ -9,11 +9,26 @@ jobs:
       - run: staticcheck -checks all,-ST1000 ./...
       - run: go test -p 1 -v -cover -coverprofile=c.out -race ./...
       - run: go tool cover -func=c.out
+  release:
+    docker:
+      - image: cimg/base:2022.11
+    steps:
       - setup_remote_docker:
           version: 20.10.14
       - run: |
-          [[ -z "$CIRCLE_TAG" ]] && exit 0
-          [[ "$CIRCLE_BRANCH" == master ]] || exit 0
-          docker build -t DOCKERHUB_IMAGE:$CIRCLE_TAG --build-args VERSION=$CIRCLE_SHA1 .
+          docker build -t $DOCKERHUB_IMAGE:$CIRCLE_TAG --build-args VERSION=$CIRCLE_TAG .
           echo $DOCKERHUB_PASS | docker login -u $DOCKERHUB_USER --password-stdin
-          docker push DOCKERHUB_IMAGE:$CIRCLE_TAG
+          docker push $DOCKERHUB_IMAGE:$CIRCLE_TAG
+workflows:
+  version: 2
+  untagged-build:
+    jobs:
+      - build
+  tagged-build:
+    jobs:
+      - release:
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
