@@ -1,10 +1,13 @@
 FROM golang:1.19-alpine AS build
 
-ARG VERSION=latest
+WORKDIR /go/src/github.com/taylorchu/wait-for/
+COPY go.mod go.sum ./
+RUN go mod download
+COPY . .
 ENV CGO_ENABLED=0
-RUN go install github.com/taylorchu/wait-for@$VERSION
+RUN go build -o /tmp .
 
 FROM alpine
 
-COPY --from=build /go/bin/wait-for /usr/bin/
+COPY --from=build /tmp/wait-for /usr/bin/
 RUN ! ldd /usr/bin/wait-for

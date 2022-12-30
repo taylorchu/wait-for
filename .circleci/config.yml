@@ -18,7 +18,6 @@ jobs:
       - checkout
       - run: |
           docker build \
-            --build-arg VERSION=$CIRCLE_TAG \
             -t $DOCKERHUB_IMAGE:$CIRCLE_TAG \
             -t $DOCKERHUB_IMAGE:latest \
             .
