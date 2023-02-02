@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"os/exec"
 	"syscall"
@@ -37,6 +38,9 @@ func runWithGracefulShutdown(ctx context.Context, cmd *exec.Cmd) error {
 
 	waitErr := cmd.Wait()
 	if interruptErr := <-errc; interruptErr != nil {
+		if errors.Is(interruptErr, context.Canceled) {
+			return nil
+		}
 		return interruptErr
 	}
 	if waitErr != nil {
